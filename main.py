@@ -228,7 +228,7 @@ def main():
         st.write("We are a group of passionate college developers dedicated to making a difference in agriculture and water management.")
         
         team_members = [
-            {"name": "Prince", "role": "Oython Developer 💻", "bio": "Passionate about coding and solving real-world problems."},
+            {"name": "Prince", "role": "Python Developer 💻", "bio": "Passionate about coding and solving real-world problems."},
             {"name": "Ike", "role": "ML Scientist 📊", "bio": "Loves turning complex data into actionable insights."},
             {"name": "Joshua", "role": "ML Engineer 🎨", "bio": "Focuses on creating intuitive and user-friendly responses from ML analysis."},
         ]

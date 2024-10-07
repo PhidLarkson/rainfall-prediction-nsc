@@ -107,12 +107,15 @@ def main():
 
 
         col1, col2 = st.columns(2)
+    
         with col1:
             lat = st.number_input("Latitude 🌐", value=5.5593)
             start_date = st.date_input("Start Date 📅", value=datetime.now())
         with col2:
             lon = st.number_input("Longitude 🌐", value=0.1974)
             end_date = st.date_input("End Date 📅", value=datetime.now() + timedelta(days=7))
+
+        st.write("Use a small time range for AI analysis, else error!")
 
         if st.button("Predict Rainfall 🔮"):
             st.write(f"API Username: {API_USERNAME}")  # Debug: Show the API username being used

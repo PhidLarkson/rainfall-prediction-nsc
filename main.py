@@ -23,7 +23,11 @@ API_PASSWORD = os.getenv("API_PASSWORD")
 
 @st.cache_data
 def get_weather_data(start_date, end_date, parameters, lat, lon):
-    url = f"https://api.meteomatics.com/{start_date}T00:00:00Z--{end_date}T00:00:00Z:PT1H/t_2m:C,precip_1h:mm,wind_speed_10m:ms/{lat},{lon}/json"
+    temperature = parameters[0] 
+    precipitation = parameters[1]
+    wind_speed = parameters[2]
+
+    url = f"https://api.meteomatics.com/{start_date}T00:00:00Z--{end_date}T00:00:00Z:PT1H/{temperature},{precipitation},{wind_speed}/{lat},{lon}/json"
 
     st.write(f"Requesting data from: {url}")  # Debug: Show the URL being requested
     
@@ -47,8 +51,13 @@ def get_weather_data(start_date, end_date, parameters, lat, lon):
         st.write("Response content:", response.text)  # Debug: Show the response content
         return None
 
-def plot_weather_data(data, parameter):
+def plot_weather_data1(data, parameter):
     df = pd.DataFrame(data['data'][0]['coordinates'][0]['dates'])
+    fig = px.line(df, x='date', y='value', title=f"{parameter} over time")
+    return fig
+
+def plot_weather_data2(data, parameter):
+    df = pd.DataFrame(data['data'][1]['coordinates'][0]['dates'])
     fig = px.line(df, x='date', y='value', title=f"{parameter} over time")
     return fig
 
@@ -99,15 +108,15 @@ def main():
 
         col1, col2 = st.columns(2)
         with col1:
-            lat = st.number_input("Latitude 🌐", value=52.520551)
+            lat = st.number_input("Latitude 🌐", value=5.5593)
             start_date = st.date_input("Start Date 📅", value=datetime.now())
         with col2:
-            lon = st.number_input("Longitude 🌐", value=13.461804)
+            lon = st.number_input("Longitude 🌐", value=0.1974)
             end_date = st.date_input("End Date 📅", value=datetime.now() + timedelta(days=7))
 
         if st.button("Predict Rainfall 🔮"):
             st.write(f"API Username: {API_USERNAME}")  # Debug: Show the API username being used
-            data = get_weather_data(start_date, end_date, ["precip_1h:mm", "t_2m:C"], lat, lon)
+            data = get_weather_data(start_date, end_date, ["precip_1h:mm", "t_2m:C", "wind_speed_10m:ms"], lat, lon)
             if data:
                 rainfall_predicted = predict_rainfall(data)
 
@@ -122,8 +131,8 @@ def main():
                 st.subheader("Weather Visualization 📈")
                 tab1, tab2 = st.tabs(["📊 Charts", "🗺️ Heatmap"])
                 with tab1:
-                    st.plotly_chart(plot_weather_data(data, "Precipitation (mm)"), use_container_width=True)
-                    st.plotly_chart(plot_weather_data(data, "Temperature (°C)"), use_container_width=True)
+                    st.plotly_chart(plot_weather_data1(data, "Precipitation (mm)"), use_container_width=True)
+                    st.plotly_chart(plot_weather_data2(data, "Temperature (°C)"), use_container_width=True)
                 with tab2:
                     st.write("Precipitation Heatmap")
                     folium_static(create_heatmap(data, lat, lon))
@@ -133,15 +142,25 @@ def main():
                 st.subheader("Farmer's Insight 🌾")
                 if rainfall_predicted:
                     st.info("Rainfall is expected in the coming days. Consider adjusting your irrigation schedule and preparing for potential water accumulation.")
-                    st.audio(api.tts(api.translate( "Rainfall is expected in the coming days. Consider adjusting your irrigation schedule and preparing for potential water accumulation.", "en-tw"), "tw"))
+                    if key:
+                        st.audio(api.tts(api.translate( "Rainfall is expected in the coming days. Consider adjusting your irrigation schedule and preparing for potential water accumulation.", "en-tw"), "tw"))
                 else:
                     st.warning("No significant rainfall is expected. Ensure your crops have adequate irrigation and consider water conservation measures.")
-                    st.audio(api.tts(api.translate("No significant rainfall is expected. Ensure your crops have adequate irrigation and consider water conservation measures.", "en-tw"), "tw"))
+                    if key:
+                        st.audio(api.tts(api.translate("No significant rainfall is expected. Ensure your crops have adequate irrigation and consider water conservation measures.", "en-tw"), "tw"))
 
-                # AI interpretation for deeper insights
+                # Extract the first 5 items from the JSON data (assuming data is a dictionary)
+                data = str(data)
                 ai_insight = analyze_weather_data(data)
+
                 st.subheader("AI-Powered Insight 💡")
-                st.write(ai_insight)
+                # print(data[:100]+data[550:700]+data[900:])
+                print(len(data))
+                print(data)
+                # print(data)
+                print(ai_insight)
+                st.markdown(ai_insight)
+                st.markdown("Powered by [Groq's mixtral-8x7b-32768](https://groq.com)")
                 
          
     elif page == "Data Insights 📊":
@@ -206,9 +225,9 @@ def main():
         st.write("We are a group of passionate college developers dedicated to making a difference in agriculture and water management.")
         
         team_members = [
-            {"name": "Prince", "role": "Lead Developer 💻", "bio": "Passionate about coding and solving real-world problems."},
-            {"name": "Ike", "role": "Data Scientist 📊", "bio": "Loves turning complex data into actionable insights."},
-            {"name": "Joshua", "role": "UI/UX Designer 🎨", "bio": "Focuses on creating intuitive and user-friendly interfaces."},
+            {"name": "Prince", "role": "Oython Developer 💻", "bio": "Passionate about coding and solving real-world problems."},
+            {"name": "Ike", "role": "ML Scientist 📊", "bio": "Loves turning complex data into actionable insights."},
+            {"name": "Joshua", "role": "ML Engineer 🎨", "bio": "Focuses on creating intuitive and user-friendly responses from ML analysis."},
         ]
 
         for member in team_members:

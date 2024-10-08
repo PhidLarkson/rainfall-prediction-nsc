@@ -16,7 +16,6 @@ import os
 dotenv.load_dotenv()
 
 
-
 # Meteomatics API credentials
 API_USERNAME = os.getenv("API_USERNAME")
 API_PASSWORD = os.getenv("API_PASSWORD")
@@ -107,15 +106,12 @@ def main():
 
 
         col1, col2 = st.columns(2)
-    
         with col1:
             lat = st.number_input("Latitude 🌐", value=5.5593)
             start_date = st.date_input("Start Date 📅", value=datetime.now())
         with col2:
             lon = st.number_input("Longitude 🌐", value=0.1974)
             end_date = st.date_input("End Date 📅", value=datetime.now() + timedelta(days=7))
-
-        st.write("Use a small time range for AI analysis, else error!")
 
         if st.button("Predict Rainfall 🔮"):
             st.write(f"API Username: {API_USERNAME}")  # Debug: Show the API username being used
@@ -228,7 +224,7 @@ def main():
         st.write("We are a group of passionate college developers dedicated to making a difference in agriculture and water management.")
         
         team_members = [
-            {"name": "Prince", "role": "Python Developer 💻", "bio": "Passionate about coding and solving real-world problems."},
+            {"name": "Prince", "role": "Oython Developer 💻", "bio": "Passionate about coding and solving real-world problems."},
             {"name": "Ike", "role": "ML Scientist 📊", "bio": "Loves turning complex data into actionable insights."},
             {"name": "Joshua", "role": "ML Engineer 🎨", "bio": "Focuses on creating intuitive and user-friendly responses from ML analysis."},
         ]

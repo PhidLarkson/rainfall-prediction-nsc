@@ -45,7 +45,7 @@ def analyze_weather_data(data):
     except Exception as e:
         if "rate limit" in str(e):
             wait_time = 20  # Wait a few seconds before retrying
-            print(f"Rate limit hit. Retrying in {wait_time} seconds...")
+            # print(f"Rate limit hit. Retrying in {wait_time} seconds...")
             time.sleep(wait_time)
             return analyze_weather_data(data)  # Retry the request
         else:

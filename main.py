@@ -16,6 +16,7 @@ import os
 dotenv.load_dotenv()
 
 
+
 # Meteomatics API credentials
 API_USERNAME = os.getenv("API_USERNAME")
 API_PASSWORD = os.getenv("API_PASSWORD")
@@ -154,10 +155,10 @@ def main():
 
                 st.subheader("AI-Powered Insight 💡")
                 # print(data[:100]+data[550:700]+data[900:])
-                print(len(data))
-                print(data)
+                # print(len(data))
                 # print(data)
-                print(ai_insight)
+                # print(data)
+                # print(ai_insight)
                 st.markdown(ai_insight)
                 st.markdown("Powered by [Groq's mixtral-8x7b-32768](https://groq.com)")
                 
